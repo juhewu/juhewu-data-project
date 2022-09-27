@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.juhewu.data.springboot.simple.all.mapper.StudentMapper">
+
+    <!--新增学生-->
+    <insert id="insert" parameterType="org.juhewu.data.springboot.simple.all.pojo.entity.Student">
+        INSERT INTO student(
+                        `chinese_name`,
+                        `id_card`,
+                        `fixed_phone`,
+                        `mobile_phone`,
+                        `address`,
+                        `email`,
+                        `bank_card`,
+                        `password`,
+                        `key`,
+                        `test`)
+        VALUES (#{chineseName}, #{idCard}, #{fixedPhone}, #{mobilePhone}, #{address}, #{email}, #{bankCard}, #{password}, #{key}, #{test});
+    </insert>
+
+    <!--批量新增学生-->
+    <insert id="insertBatch" parameterType="list">
+        INSERT INTO student(`id`, `name`, `update_time`)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.name}, #{item.updateTime})
+        </foreach>
+    </insert>
+
+    <!--分页查询学生-->
+    <select id="selectPage" resultType="org.juhewu.data.springboot.simple.all.pojo.entity.Student" parameterType="map">
+        select * from student
+        <trim prefix="where" prefixOverrides="AND">
+            <if test="null != name and '' != name">
+                <bind name="name_like" value="'%' + name + '%'"/>
+                AND name like #{name_like}
+            </if>
+            <if test="null != startTime and null != endTime">
+                AND update_time between startTime and endTime
+            </if>
+            and id in
+            <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
+                <if test="(index % 999) == 998">NULL ) OR ID IN (</if>#{item}
+            </foreach>
+        </trim>
+    </select>
+
+    <!--根据id查看学生-->
+    <select id="findById" resultType="org.juhewu.data.springboot.simple.all.pojo.entity.Student" parameterType="integer">
+        select *
+        from student
+        where id = #{id}
+    </select>
+
+    <!--根据id修改学生-->
+    <update id="updateById" parameterType="org.juhewu.data.springboot.simple.all.pojo.entity.Student">
+        update student
+        <set>
+            <if test="null != name and '' != name">
+                name = #{name},
+            </if>
+            <if test="null != updateTime">
+                update_time = #{updateTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--根据id批量修改学生-->
+    <update id="updateBatchById">
+        <foreach collection="studentList" item="item" index="index" open="" close="" separator=";">
+            update student
+            <set>
+                <if test="null != item.name and '' != item.name">
+                    name = #{item.name},
+                </if>
+                <if test="null != item.updateTime">
+                    update_time = #{item.updateTime}
+                </if>
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <!--根据id删除学生-->
+    <delete id="deleteById" parameterType="integer">
+        delete
+        from student
+        where id = #{id}
+    </delete>
+
+    <!--根据id批量删除学生-->
+    <delete id="deleteBatchById" parameterType="int">
+        delete from student where id in
+        <foreach collection="ids" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!--分页查询学生总分数-->
+    <select id="selectStudentScorePage" resultType="org.juhewu.data.springboot.simple.all.pojo.vo.StudentScoreVO"
+            parameterType="map">
+        select st.*,(select sum(score) from score sc where st.id = sc.student_id) as score from student st
+        <trim prefix="where" prefixOverrides="AND">
+            <if test="null != name and '' != name">
+                <bind name="name_like" value="'%' + name + '%'"/>
+                AND name like #{name_like}
+            </if>
+            <if test="null != startTime and null != endTime">
+                AND update_time between startTime and endTime
+            </if>
+        </trim>
+    </select>
+    <select id="list" resultType="org.juhewu.data.springboot.simple.all.pojo.entity.Student">
+        select * from student
+        <trim prefix="where" prefixOverrides="AND">
+            <if test="null != name and '' != name">
+                <bind name="name_like" value="'%' + name + '%'"/>
+                AND name like #{name_like}
+            </if>
+            <if test="null != startTime and null != endTime">
+                AND update_time between startTime and endTime
+            </if>
+            <if test="null != id and null != id">
+                and id in
+                <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
+                    <if test="(index % 999) == 998">NULL ) OR ID IN (</if>#{item}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+
+
+</mapper>

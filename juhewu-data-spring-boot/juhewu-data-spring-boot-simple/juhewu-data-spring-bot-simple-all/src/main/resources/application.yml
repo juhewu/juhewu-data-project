@@ -1,0 +1,21 @@
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    # 打印 sql 日志
+logging:
+  level:
+    org.juhewu.data.springboot.simple.all.mapper: debug
+juhewu:
+  data:
+    # 数据加密，存储到数据库的数据使用 aes 算法加密，查出来的数据使用 aes 解密
+    encrypt:
+      # 使用此密码加密
+      password: asdfasdfasdfasdf
+      # 是否启用，默认 false，不启用
+      enable: true
+      skip-decrypt-error: false
+    # 数据脱敏
+    sensitive:
+      # 是否启用
+      enable: true
