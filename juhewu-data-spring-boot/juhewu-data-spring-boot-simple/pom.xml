@@ -12,7 +12,7 @@
     <artifactId>juhewu-data-spring-boot-simple</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>juhewu-data-spring-bot-simple-all</module>
+        <module>juhewu-data-spring-boot-simple-all</module>
     </modules>
 
 </project>

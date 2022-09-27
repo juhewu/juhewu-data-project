@@ -72,15 +72,15 @@
     </organization>
 
     <scm>
-        <url>https://github.com/juhewu/juehwu-data-project</url>
-        <connection>scm:git:git:////github.com/juhewu/juehwu-data-project.git</connection>
-        <developerConnection>scm:git:ssh://git@//github.com/juhewu/juehwu-data-project.git
+        <url>https://github.com/juhewu/juhewu-data-project</url>
+        <connection>scm:git:git:////github.com/juhewu/juhewu-data-project.git</connection>
+        <developerConnection>scm:git:ssh://git@//github.com/juhewu/juhewu-data-project.git
         </developerConnection>
     </scm>
 
     <issueManagement>
         <system>Github</system>
-        <url>https://github.com/juhewu/juehwu-data-project/issues</url>
+        <url>https://github.com/juhewu/juhewu-data-project/issues</url>
     </issueManagement>
 
     <mailingLists>
