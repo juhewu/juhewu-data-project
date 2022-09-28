@@ -18,7 +18,7 @@ public interface ISensitiveStrategy {
      * @return 脱敏后的内容
      */
     default String handle(String type, String raw) {
-        return (String) ((Function) this.getStrategyFunctionMap().get(type)).apply(raw);
+        return this.getStrategyFunctionMap().get(type).apply(raw);
     }
 
     /**

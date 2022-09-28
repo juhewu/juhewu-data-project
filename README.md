@@ -98,8 +98,9 @@ mobile_phone 字段做了数据加密，查出来的数据也会做自动解密�
 ```xml
         <dependency>
             <groupId>org.juhewu</groupId>
-            <artifactId>juhewu-data-sensitive-spring-boot-starter</artifactId>
+            <artifactId>juhewu-data-annotation</artifactId>
             <version>${juhewu-data.version}</version>
+            <scope>provided</scope>
         </dependency>
 ```
 
