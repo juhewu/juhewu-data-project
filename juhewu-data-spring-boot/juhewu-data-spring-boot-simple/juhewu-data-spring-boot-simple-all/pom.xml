@@ -32,6 +32,11 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
+        <!--mysql-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
         <!--mybatis 分页插件-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>

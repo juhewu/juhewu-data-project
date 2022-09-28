@@ -131,14 +131,14 @@ mobile_phone 字段做了数据加密，查出来的数据也会做自动解密�
 #### 支持的脱敏规则
 
 1. SensitiveType.CHINESE_NAME：【中文姓名】只显示最后一个汉字，其他隐藏。比如：**三。
-2. SensitiveType.ID_CARD：【身份证号】显示前六位，后四位，其他隐藏。支持 18 位或者 15 位，比如：123456********1234、123456*****1234
+2. SensitiveType.ID_CARD：【身份证号】显示前六位，后四位，其他隐藏。支持 18 位或者 15 位，比如：123456***\*\*\*\*\*1234、123456*****1234
 3. SensitiveType.FIXED_PHONE：【固定电话】显示后四位，其他隐藏。比如：****1234
 4. SensitiveType.MOBILE_PHONE：【手机号码】显示前三位，后四位，其他隐藏。比如：123****1234
 5. SensitiveType.ADDRESS：【地址】只显示前六位，不显示详细地址，比如：北京市海淀区****
 6. SensitiveType.EMAIL：【电子邮箱】 邮箱前缀仅显示第一个字母，前缀其他隐藏，@及后面的地址显示，比如：a**@126.com
 7. SensitiveType.BANK_CARD：【银行卡号】显示前六位，后四位，其他隐藏，比如：123456**********1234
 8. SensitiveType.PASSWORD【密码】密码的全部字符都隐藏，比如：******
-9. SensitiveType.KEY：【密钥】密钥除了最后三位，全部都用*代替，比如：***xdS 脱敏后长度为6，如果明文长度不足三位，则按实际长度显示，剩余位置补*
+9. SensitiveType.KEY：【密钥】密钥除了最后三位，全部都用\*代替，比如：***xdS 脱敏后长度为6，如果明文长度不足三位，则按实际长度显示，剩余位置补\*
 10. SensitiveType.DEFAULT：【默认】全部都用*代替
 
 #### 扩展规则
@@ -173,4 +173,47 @@ public class SensitiveStrategyConfig {
 
 ```java
         RequestDataContextHolder.skipSensitive();
+```
+
+#### 等于搜索
+
+- 方式一：
+
+可以在程序中调用组件的加密方法机密传入的搜索内容。
+
+```java
+// 注入组件的加密对象
+private final IEncryptor encryptor;
+
+// 加密传入的字符，返回加密后的字符串
+encryptor.encrypt("13312341234");
+```
+
+- 方式二：
+
+可以在 sql 里完成等于搜索。参考下文的模糊搜索。
+
+#### 模糊搜索
+
+必须使用 sql 语句完成模糊搜索。
+
+1. 给 mybatis 添加加密密码变量，此变量需要在 sql 中解密数据时用到
+
+```yml
+mybatis:
+  configuration:
+    variables:
+      encryptPassword: ${juhewu.data.encrypt.password}
+```
+
+2. 加密列出现在 where 条件中，需要按以下方式修改 sql
+
+AND AES_DECRYPT(UNHEX(field),'${encryptPassword}') LIKE #{mobilePhone_like}
+
+如：需要手机号左右模糊查询
+```sql
+            <if test="null != mobilePhone and '' != mobilePhone">
+                <bind name="mobilePhone_like" value="'%' + mobilePhone + '%'"/>
+                AND AES_DECRYPT(UNHEX(mobile_phone),'${encryptPassword}') LIKE #{mobilePhone_like}
+            </if>
 ```

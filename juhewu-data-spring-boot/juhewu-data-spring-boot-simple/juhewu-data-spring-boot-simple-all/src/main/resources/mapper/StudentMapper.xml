@@ -31,9 +31,9 @@
     <select id="selectPage" resultType="org.juhewu.data.springboot.simple.all.pojo.entity.Student" parameterType="map">
         select * from student
         <trim prefix="where" prefixOverrides="AND">
-            <if test="null != name and '' != name">
-                <bind name="name_like" value="'%' + name + '%'"/>
-                AND name like #{name_like}
+            <if test="null != chineseName and '' != chineseName">
+<!--                <bind name="name_like" value="'%' + name + '%'"/>-->
+                AND chinese_name like ${password}
             </if>
             <if test="null != startTime and null != endTime">
                 AND update_time between startTime and endTime
@@ -111,12 +111,31 @@
             </if>
         </trim>
     </select>
-    <select id="list" resultType="org.juhewu.data.springboot.simple.all.pojo.entity.Student">
+    <select id="list" resultType="org.juhewu.data.springboot.simple.all.pojo.entity.Student" databaseId="h2">
         select * from student
         <trim prefix="where" prefixOverrides="AND">
-            <if test="null != name and '' != name">
-                <bind name="name_like" value="'%' + name + '%'"/>
-                AND name like #{name_like}
+            <if test="null != mobilePhone and '' != mobilePhone">
+                <bind name="mobilePhone_like" value="'%' + mobilePhone + '%'"/>
+                AND DECRYPT('AES', STRINGTOUTF8('${encryptPassword}'), mobile_phone) like #{mobilePhone_like}
+            </if>
+            <if test="null != startTime and null != endTime">
+                AND update_time between startTime and endTime
+            </if>
+            <if test="null != id and null != id">
+                and id in
+                <foreach collection="array" item="item" index="index" open="(" close=")" separator=",">
+                    <if test="(index % 999) == 998">NULL ) OR ID IN (</if>#{item}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+
+    <select id="list" resultType="org.juhewu.data.springboot.simple.all.pojo.entity.Student" databaseId="mysql">
+        select * from student
+        <trim prefix="where" prefixOverrides="AND">
+            <if test="null != mobilePhone and '' != mobilePhone">
+                <bind name="mobilePhone_like" value="'%' + mobilePhone + '%'"/>
+                AND AES_DECRYPT(UNHEX(mobile_phone),'${encryptPassword}')  LIKE #{mobilePhone_like}
             </if>
             <if test="null != startTime and null != endTime">
                 AND update_time between startTime and endTime

@@ -1,5 +1,6 @@
 package org.juhewu.data.springboot.simple.all.web;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.juhewu.data.context.RequestDataContextHolder;
@@ -37,7 +38,9 @@ public class StudentController {
         Student student = new Student("", "张三三", "130406199901012222", "0310-5251111", "13312341234", "北京市朝阳区和平里1233号", "123123@126.com", "1234567891234567",
                 "qazxsw", "123qwe", "test123test");
         studentService.insert(student);
-        return studentService.list(null);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("mobilePhone", "133");
+        return studentService.list(map);
     }
 
     /**

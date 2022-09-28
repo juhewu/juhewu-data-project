@@ -3,6 +3,7 @@ package org.juhewu.data.springboot.simple.all.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.juhewu.data.encrypt.IEncryptor;
 import org.juhewu.data.springboot.simple.all.mapper.StudentMapper;
 import org.juhewu.data.springboot.simple.all.pojo.entity.Student;
 import org.juhewu.data.springboot.simple.all.pojo.vo.StudentScoreVO;
@@ -12,16 +13,21 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageInfo;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 学生service实现
  *
  * @author duanjw
  */
+@Slf4j
 @Service
+@AllArgsConstructor
 public class StudentServiceImpl implements StudentService {
 
-    @Autowired
-    private StudentMapper studentMapper;
+    private final StudentMapper studentMapper;
+    private final IEncryptor encryptor;
 
     /**
      * 新增学生
@@ -64,6 +70,7 @@ public class StudentServiceImpl implements StudentService {
      */
     @Override
     public List<Student> list(Map map) {
+        log.debug("13312341234 加密后：{}，加密方法：{}",encryptor.encrypt("13312341234"), "encryptor.encrypt(\"13312341234\")");
         return studentMapper.list(map);
     }
 

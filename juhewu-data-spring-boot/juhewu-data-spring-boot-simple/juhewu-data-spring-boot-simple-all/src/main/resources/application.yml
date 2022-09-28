@@ -1,11 +1,18 @@
+spring:
+  profiles:
+    active: h2
+
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
   configuration:
     map-underscore-to-camel-case: true
-    # 打印 sql 日志
+    variables:
+      encryptPassword: ${juhewu.data.encrypt.password}
+  # 打印 sql 日志
 logging:
   level:
-    org.juhewu.data.springboot.simple.all.mapper: debug
+    org.juhewu.data.springboot.simple.all: debug
+
 juhewu:
   data:
     # 数据加密，存储到数据库的数据使用 aes 算法加密，查出来的数据使用 aes 解密
@@ -19,3 +26,18 @@ juhewu:
     sensitive:
       # 是否启用
       enable: true
+---
+spring:
+  profiles: h2
+
+---
+spring:
+  profiles: mysql
+  # 数据库
+  datasource:
+    ## mysql 连接驱动，可不配置。默认从引入的pom中找
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${CIIC_MYSQL_USERNAME:root}
+    password: ${CIIC_MYSQL_PASSWORD:root}
+    ## 批量更新 sql 需要设置 &allowMultiQueries=true
+    url: jdbc:mysql://localhost:3306/juhewu_data?characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&allowMultiQueries=true
