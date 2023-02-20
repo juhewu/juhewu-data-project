@@ -74,6 +74,10 @@ public class DecryptionInterceptor implements Interceptor {
      * @param object 待检查的对象
      */
     private void decryptField(Object object) throws IllegalAccessException {
+        // fix: 查询结果为 null
+        if(null == object) {
+            return;
+        }
         Class<?> clazz = object.getClass();
 
         Field[] fields = clazz.getDeclaredFields();

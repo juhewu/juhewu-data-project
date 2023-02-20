@@ -63,6 +63,10 @@ public class EncryptionInterceptor implements Interceptor {
      * @param object 待加密的对象
      */
     private void encryptField(Object object) throws IllegalAccessException {
+        // fix: 查询结果为 null
+        if(null == object) {
+            return;
+        }
         Class<?> clazz = object.getClass();
 
         Field[] fields = clazz.getDeclaredFields();

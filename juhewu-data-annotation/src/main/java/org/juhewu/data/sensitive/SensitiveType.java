@@ -32,7 +32,7 @@ public enum SensitiveType {
      */
     ADDRESS,
     /**
-     * 电子邮件, s*****o@xx.com
+     * 电子邮件, s*****@xx.com
      */
     EMAIL,
     /**
